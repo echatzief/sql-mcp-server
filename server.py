@@ -11,7 +11,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def create_mcp_server(database_manager: DatabaseManager, config: Config) -> FastMCP:
-    mcp = FastMCP("sql-mcp-server")
+    port = int(getattr(config, "http_port", 8080))
+    mcp = FastMCP("sql-mcp-server", host=config.db_host, port=port)
 
     @mcp.tool()
     async def execute_query(query: str, format_type: str = "json") -> str:
@@ -44,13 +45,14 @@ async def run_server():
     await database_manager.connect()
 
     mcp = create_mcp_server(database_manager, config)
-    await mcp.run_stdio_async()
+    await mcp.run_streamable_http_async()
 
     await database_manager.disconnect()
 
 
 def main():
     asyncio.run(run_server())
+
 
 if __name__ == "__main__":
     main()
