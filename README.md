@@ -40,7 +40,13 @@ pip install -e .
 
 ## Configuration
 
-Create a `.env` file in the project root with the following variables:
+Copy `.env.example` to `.env` and configure the environment variables:
+
+```bash
+cp .env.example .env
+```
+
+Then edit `.env` with your database credentials and settings:
 
 ```env
 # Database Configuration
@@ -54,6 +60,7 @@ DATABASE_MIN_POOL_SIZE=1
 DATABASE_MAX_POOL_SIZE=10
 
 # Server Configuration (optional)
+HTTP_HOST=0.0.0.0          # Bind address (defaults to all interfaces)
 HTTP_PORT=8080
 ```
 
@@ -69,6 +76,7 @@ HTTP_PORT=8080
 | `DATABASE_NAME` | Yes | - | Default database to connect to |
 | `DATABASE_MIN_POOL_SIZE` | Yes | - | Minimum pool size for connections |
 | `DATABASE_MAX_POOL_SIZE` | Yes | - | Maximum pool size for connections |
+| `HTTP_HOST` | No | `0.0.0.0` | HTTP server bind address |
 | `HTTP_PORT` | No | 8080 | HTTP server port for MCP |
 
 ## Usage
@@ -119,6 +127,22 @@ Add the server to your MCP client configuration:
 }
 ```
 
+**Direct HTTP Connection:**
+
+The server exposes a Streamable HTTP endpoint. Configure your MCP client to connect directly:
+
+```json
+{
+  "mcpServers": {
+    "sql": {
+      "url": "http://localhost:8080/mcp"
+    }
+  }
+}
+```
+
+> **Note**: For direct HTTP connections, ensure the server is running and accessible at the specified URL.
+
 ### Example Tool Calls
 
 ```python
@@ -163,14 +187,8 @@ sql-mcp-server/
 ## Development
 
 ```bash
-# Install development dependencies
-uv pip install -e ".[dev]"
-
 # Run in development mode with auto-reload (requires watching tool)
 uv run watch -c "python main.py" .
-
-# Run tests (if configured)
-uv run pytest
 ```
 
 ## Dependencies
@@ -182,6 +200,21 @@ uv run pytest
 | `aiomysql` | MySQL async driver |
 | `python-dotenv` | Environment variable management |
 
+## Running Tests
+
+Tests are not yet implemented.
+
 ## License
 
 MIT
+
+## Changelog
+
+### v0.1.0 (2026-02-05)
+
+- Initial release
+- Added Streamable HTTP transport support for MCP
+- Separated HTTP host configuration into dedicated environment variable
+- Added comprehensive README documentation
+- Improved server module organization (moved server.py to src/server.py)
+- Added example .env configuration file
