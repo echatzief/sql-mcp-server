@@ -1,10 +1,10 @@
 def format_execute_query_description(read_only):
-    if read_only: 
+    if read_only:
         return """
             ⚠️ READ-ONLY MODE ⚠️
             This database connection only allows read operations.
 
-            For PostgreSQL/MySQL: Only SELECT, SHOW, DESCRIBE queries allowed. 
+            For PostgreSQL/MySQL: Only SELECT, SHOW, DESCRIBE queries allowed.
             WRITE operations (INSERT, UPDATE, DELETE, DROP, CREATE, ALTER) are BLOCKED.
 
             For MongoDB: Only read operations (find, find_one, aggregate, count) allowed.
@@ -17,9 +17,9 @@ def format_execute_query_description(read_only):
             Optional fields for find: projection, sort, skip, limit
         """
     else:
-        return """  
-            Execute a query against the database. 
-        
+        return """
+            Execute a query against the database.
+
             For PostgreSQL/MySQL: Use SQL syntax (e.g., "SELECT * FROM users WHERE active = true LIMIT 10")
 
             For MongoDB: Use JSON format with operation type:

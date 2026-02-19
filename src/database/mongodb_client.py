@@ -1,10 +1,10 @@
 import json
-from typing import Any, List, Dict, Optional
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Any
 
-from pymongo import AsyncMongoClient
 from bson import ObjectId, json_util
+from pymongo import AsyncMongoClient
 
 
 @dataclass
@@ -13,8 +13,8 @@ class MongoDBClient:
     database: str
 
     async def execute_query(
-        self, query_json: str, params: Optional[tuple] = None
-    ) -> List[Dict[str, Any]]:
+        self, query_json: str, params: tuple | None = None
+    ) -> list[dict[str, Any]]:
         try:
             query = json.loads(query_json)
         except json.JSONDecodeError:
@@ -39,9 +39,7 @@ class MongoDBClient:
             return [self._serialize_doc(doc) async for doc in cursor]
 
         elif operation == "find_one":
-            doc = await collection.find_one(
-                query.get("filter", {}), query.get("projection")
-            )
+            doc = await collection.find_one(query.get("filter", {}), query.get("projection"))
             return [self._serialize_doc(doc)] if doc else []
 
         elif operation == "aggregate":
@@ -63,20 +61,12 @@ class MongoDBClient:
             return [{"inserted_ids": [str(id) for id in result.inserted_ids]}]
 
         elif operation == "update_one":
-            result = await collection.update_one(
-                query.get("filter", {}), query.get("update", {})
-            )
-            return [
-                {"matched": result.matched_count, "modified": result.modified_count}
-            ]
+            result = await collection.update_one(query.get("filter", {}), query.get("update", {}))
+            return [{"matched": result.matched_count, "modified": result.modified_count}]
 
         elif operation == "update_many":
-            result = await collection.update_many(
-                query.get("filter", {}), query.get("update", {})
-            )
-            return [
-                {"matched": result.matched_count, "modified": result.modified_count}
-            ]
+            result = await collection.update_many(query.get("filter", {}), query.get("update", {}))
+            return [{"matched": result.matched_count, "modified": result.modified_count}]
 
         elif operation == "delete_one":
             result = await collection.delete_one(query.get("filter", {}))
@@ -89,14 +79,14 @@ class MongoDBClient:
         else:
             raise ValueError(f"Unsupported operation: {operation}")
 
-    async def list_databases(self) -> List[str]:
+    async def list_databases(self) -> list[str]:
         return await self.client.list_database_names()
 
-    async def list_tables(self, database: Optional[str] = None) -> List[str]:
+    async def list_tables(self, database: str | None = None) -> list[str]:
         db_name = database or self.database
         return await self.client[db_name].list_collection_names()
 
-    async def describe_table(self, collection_name: str) -> List[Dict[str, Any]]:
+    async def describe_table(self, collection_name: str) -> list[dict[str, Any]]:
         collection = self.client[self.database][collection_name]
 
         sample_docs = []
