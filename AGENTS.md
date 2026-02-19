@@ -58,6 +58,7 @@ Configuration management that reads from environment variables:
 - `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_USER`, `DATABASE_PASSWORD`, `DATABASE_NAME`
 - `DATABASE_MIN_POOL_SIZE`, `DATABASE_MAX_POOL_SIZE`
 - `HTTP_HOST`, `HTTP_PORT`
+- `READ_ONLY_MODE`: Enable read-only mode (default: true)
 
 ### 3. `src/database/manager.py`
 Database connection pool manager that:
@@ -115,6 +116,7 @@ DATABASE_MAX_POOL_SIZE=10
 DATABASE_PASSWORD=your_password
 HTTP_HOST=0.0.0.0
 HTTP_PORT=8080
+READ_ONLY_MODE=true  # Set to false to allow write operations
 ```
 
 ## Common Development Tasks

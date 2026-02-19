@@ -78,6 +78,22 @@ HTTP_PORT=8080
 | `DATABASE_MAX_POOL_SIZE` | Yes | - | Maximum pool size for connections |
 | `HTTP_HOST` | No | `0.0.0.0` | HTTP server bind address |
 | `HTTP_PORT` | No | 8080 | HTTP server port for MCP |
+| `READ_ONLY_MODE` | No | `true` | Enable read-only mode (blocks write operations) |
+
+## Read-Only Mode
+
+By default, the server runs in read-only mode to prevent accidental data modifications. When enabled:
+
+- **PostgreSQL/MySQL**: Only `SELECT`, `SHOW`, and `DESCRIBE` queries are allowed
+- **MongoDB**: Only read operations (`find`, `find_one`, `aggregate`, `count`) are allowed
+
+Write operations like `INSERT`, `UPDATE`, `DELETE`, `DROP`, `CREATE`, `ALTER` are blocked.
+
+To disable read-only mode (allow all operations):
+
+```env
+READ_ONLY_MODE=false
+```
 
 ## Usage
 
