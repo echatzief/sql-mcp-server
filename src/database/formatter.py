@@ -1,7 +1,7 @@
-from typing import Any, List
+from typing import Any
 
 
-def format_json(results: List[Any]) -> str:
+def format_json(results: list[Any]) -> str:
     output = []
     for row in results:
         if isinstance(row, dict):
@@ -11,7 +11,7 @@ def format_json(results: List[Any]) -> str:
     return "\n".join(output)
 
 
-def format_markdown(results: List[Any]) -> str:
+def format_markdown(results: list[Any]) -> str:
     if not results:
         return "No results"
 
@@ -28,17 +28,13 @@ def format_markdown(results: List[Any]) -> str:
         rows = []
         for row in results:
             if isinstance(row, dict):
-                rows.append(
-                    " | ".join(
-                        str(row.get(h, "")).ljust(col_widths[h]) for h in headers
-                    )
-                )
+                rows.append(" | ".join(str(row.get(h, "")).ljust(col_widths[h]) for h in headers))
         return f"{header_line}\n{separator}\n" + "\n".join(rows)
     else:
         return "\n".join(str(item) for item in results)
 
 
-def format_results(results: List[Any], format_type: str = "json") -> str:
+def format_results(results: list[Any], format_type: str = "json") -> str:
     if format_type.lower() == "markdown":
         return format_markdown(results)
     return format_json(results)

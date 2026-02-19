@@ -1,11 +1,12 @@
-import asyncpg
 import aiomysql
+import asyncpg
+from pymongo import AsyncMongoClient
 
-from src.lib.config import Config
+from src.database.mongodb_client import MongoDBClient
 from src.database.mysql_client import MySQLClient
 from src.database.postgres_client import PostgresClient
-from src.database.mongodb_client import MongoDBClient
-from pymongo import AsyncMongoClient
+from src.lib.config import Config
+
 
 class DatabaseManager:
     def __init__(self, config: Config) -> None:
@@ -21,9 +22,7 @@ class DatabaseManager:
         elif self.config.db_provider == "mongodb":
             await self._connect_mongodb()
         else:
-            raise ValueError(
-                f"Unsupported database provider: {self.config.db_provider}"
-            )
+            raise ValueError(f"Unsupported database provider: {self.config.db_provider}")
 
     async def _connect_postgres(self) -> None:
         self.pool = await asyncpg.create_pool(

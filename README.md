@@ -265,13 +265,15 @@ execute_query('{"collection": "users", "operation": "count", "filter": {"active"
 ```
 database-mcp-server/
 ├── main.py                 # Entry point
-├── server.py               # MCP server and tool definitions
 ├── pyproject.toml          # Project configuration
 ├── .env                    # Environment variables (create this)
 └── src/
+    ├── server.py           # MCP server and tool definitions
     ├── lib/
     │   ├── config.py       # Configuration management
-    │   └── utils.py        # Utility functions
+    │   ├── utils.py        # Utility functions
+    │   ├── middleware.py   # Middleware for MCP server
+    │   └── mcp.py          # MCP-specific utilities
     └── database/
         ├── manager.py      # Database connection pool manager
         ├── formatter.py    # Result formatting (JSON/Markdown)
@@ -306,6 +308,12 @@ Tests are not yet implemented.
 MIT
 
 ## Changelog
+
+### v1.2.0 (2026-02-19)
+
+- Added MCP middleware support (`src/lib/middleware.py`)
+- Added MCP utilities module (`src/lib/mcp.py`)
+- Added ruff code formatter and linter configuration
 
 ### v1.1.0 (2026-02-14)
 

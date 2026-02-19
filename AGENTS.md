@@ -32,7 +32,9 @@ database-mcp-server/
     ├── server.py              # MCP server setup and tool definitions
     ├── lib/
     │   ├── config.py          # Configuration management (reads from env vars)
-    │   └── utils.py           # Utility functions
+    │   ├── utils.py           # Utility functions
+    │   ├── middleware.py      # Middleware for MCP server
+    │   └── mcp.py             # MCP-specific utilities
     └── database/
         ├── manager.py         # Database connection pool manager
         ├── formatter.py       # Result formatting (JSON/Markdown)
